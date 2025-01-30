@@ -9,5 +9,5 @@ const rootReducer = combineReducers({
   // Key값: useSelector를 이용해 가져오는 값
 });
 
-// src/index.js 쓸 수 있도록 내보내기
+// src/index.tsx가 쓸 수 있도록 내보내기
 export default rootReducer;

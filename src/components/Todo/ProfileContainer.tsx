@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProfileContainerStyle } from '../styles/MainPage.styles';
+import { ProfileContainerStyle } from '../../styles/MainPage.styles';
 
 export default function ProfileContainer() {
   return (

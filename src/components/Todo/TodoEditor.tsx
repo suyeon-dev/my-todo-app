@@ -5,31 +5,43 @@ import {
   AddButtonStyle,
   AddInputStyle,
   TodoEditorStyle,
-} from '../styles/MainPage.styles';
+} from '../../styles/MainPage.styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { create } from '../modules/todoReducer';
+import { create } from '../../modules/todoReducer';
+import { RootStateInterface } from '../../types/todo.types';
+import { AppDispatch } from '../../../src/index';
 
 export default function TodoEditor() {
   // useSelector(): store의 state 가져오기
-  let list = useSelector((state) => state.todo.list);
+  let list = useSelector((state: RootStateInterface) => state.todo.todoList);
 
   // dispatch 함수 생성
-  const dispatch = useDispatch();
-  const inputRef = useRef();
+  const dispatch = useDispatch<AppDispatch>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // const createTodo = () => {
   //   dispatch((create({id: list.length + 1})))
   // }
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   });
 
-  const enterTodo = (e) => {
+  const enterTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // console.log('e.key', e.key);
     if (e.nativeEvent.isComposing) return;
 
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && inputRef.current) {
+      dispatch(
+        create({ id: list.length + 1, text: inputRef.current.value.trim() })
+      );
+      inputRef.current.value = '';
+    }
+  };
+
+  const clickTodo = (e: React.MouseEvent<HTMLElement>) => {
+    // dispatch 함수로 action을 store에 전달
+    if (inputRef.current) {
       dispatch(create({ id: list.length + 1, text: inputRef.current.value }));
       inputRef.current.value = '';
     }
@@ -45,15 +57,7 @@ export default function TodoEditor() {
           onKeyDown={enterTodo}
         />
         {/* 할 일 추가 버튼 */}
-        <AddButtonStyle
-          onClick={() => {
-            // dispatch 함수로 action을 store에 전달
-            dispatch(
-              create({ id: list.length + 1, text: inputRef.current.value })
-            );
-            inputRef.current.value = '';
-          }}
-        >
+        <AddButtonStyle onClick={clickTodo}>
           <FontAwesomeIcon icon={faPlus} />
         </AddButtonStyle>
       </TodoEditorStyle>

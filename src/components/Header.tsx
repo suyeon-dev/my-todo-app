@@ -10,6 +10,7 @@ import {
 
 export default function Header() {
   return (
+    // (todo) 하드코딩 추후 수정
     <HeaderStyle>
       <TodayContainerStyle>
         <DateStyle>23</DateStyle>

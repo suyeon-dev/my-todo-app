@@ -1,30 +1,32 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   CheckButtonStyle,
   EditButtonStyle,
   TodoListStyle,
-} from '../styles/MainPage.styles';
-import { done } from '../modules/todoReducer';
+} from '../../styles/MainPage.styles';
+import { done } from '../../modules/todoReducer';
+import { RootStateInterface, TodoInterface } from '../../types/todo.types';
+import { AppDispatch } from '../..';
 
 export default function TodoList() {
+  // Redux 상태에서 Todolist 가져오기
   // [*] useSelector: store에 저장된 state 가져오기
-  const list = useSelector((state) => state.todo.list || []).filter(
-    (todo) => todo.done === false
-  );
+  const list = useSelector(
+    (state: RootStateInterface) => state.todo.todoList || []
+  ).filter((todo: TodoInterface) => !todo.done);
   console.log('TodoList 컴포넌트 list', list);
 
   // (todo) 이모티콘 선택기
 
   // dispatch
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <TodoListStyle>
       <h1>할 일 목록</h1>
 
       <ul>
-        {list.map((el) => {
+        {list.map((el: TodoInterface) => {
           return (
             <li key={el.id}>
               <CheckButtonStyle
